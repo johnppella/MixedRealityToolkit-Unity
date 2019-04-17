@@ -2,12 +2,14 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using Microsoft.MixedReality.Toolkit.Utilities;
+
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -36,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [FormerlySerializedAs("enabled")]
         private bool isEnabled = true;
         public bool Enabled { get => isEnabled; set => isEnabled = value; }
-
+       
         [Header("Behavior")]
         [SerializeField]
         private bool enableZoom = false;
@@ -45,15 +47,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         private bool lockVertical = false;
         [SerializeField]
-        private bool wrapTexture = false;
+        [Tooltip("If this is checked, Max Pan Horizontal and Max Pan Vertical are ignored.")]
+        private bool unlimitedPan = true;
         [SerializeField]
-        private bool velocityActive = false;
+        [Range(1.0f, 20.0f)]
+        private float maxPanHorizontal = 2;
+        [SerializeField]
+        [Range(1.0f, 20.0f)]
+        private float maxPanVertical = 2;
         [SerializeField]
         [Range(0.0f, 0.99f)]
-        private float velocityDampingX = 0.9f;
+        [Tooltip("a value of 0 results in panning coming to a complete stop when released.")]
+        private float momentumHorizontal = 0.9f;
         [SerializeField]
+        [Tooltip("a value of 0 results in panning coming to a complete stop when released.")]
         [Range(0.0f, 0.99f)]
-        private float velocityDampingY = 0.9f;
+        private float momentumVertical = 0.9f;
         [SerializeField]
         [Range(0.0f, 99.0f)]
         private float panZoomSmoothing = 80.0f;
@@ -67,12 +76,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Header("Geometry")]
         [SerializeField]
         [Tooltip("If affordace geometry is desired to emphasize the touch points(leftPoint and rightPoint) and the center point between them (reticle), assign them here.")]
-        private GameObject reticle = null;
+        private GameObject reticle;
         [SerializeField]
-        private GameObject leftPoint = null;
+        private GameObject leftPoint;
         [SerializeField]
-        private GameObject rightPoint = null;
-
+        private GameObject rightPoint;
+      
         #endregion Serialized Fields
 
 
@@ -101,6 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool affordancesVisible = false;
         private float runningAverageSmoothing = 0.0f;
         private const float percentToDecimal = 0.01f;
+        private Material currentMaterial;
         private List<Vector2> unTransformedUVs = new List<Vector2>();
         private Dictionary<uint, HandPanData> handDataMap = new Dictionary<uint, HandPanData>();
         private List<IMixedRealityHandPanHandler> handlerInterfaces = new List<IMixedRealityHandPanHandler>();
@@ -224,6 +234,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 this.GetComponent<Renderer>().material.mainTexture.wrapMode = TextureWrapMode.Repeat;
             }
 
+            //get material
+            currentMaterial = this.gameObject.GetComponent<Renderer>().material;
+
             //get event targets
             foreach (GameObject gameObject in panEventReceivers)
             {
@@ -260,79 +273,109 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 else
                 {
-                    if (velocityActive == true)
-                    {
-                        totalUVOffset = new Vector2(totalUVOffset.x * velocityDampingX, totalUVOffset.y * velocityDampingY);
-                        FirePanning(0);
-                    }
+                    totalUVOffset = new Vector2(totalUVOffset.x * momentumHorizontal, totalUVOffset.y * momentumVertical);
+                    FirePanning(0);
                 }
             }
         }
         private void UpdateUVMapping()
-        {
-            if (velocityActive)
+        {        
+            //bool oobX = false;
+            //bool oobY = false;
+            Vector2 tiling = currentMaterial != null ? currentMaterial.mainTextureScale : new Vector2(1.0f, 1.0f);
+            List<Vector2> uvs = new List<Vector2>();
+            List<Vector2> uvsOrig = new List<Vector2>();
+            Vector2 uvTestValue;
+            mesh.GetUVs(0, uvs);
+            uvsOrig.AddRange(uvs);
+            float scaleUVDelta = 0.0f;
+            Vector2 scaleUVCentroid = Vector2.zero;
+            float currentContactRatio = 0.0f;
+
+            if (scaleActive)
             {
-                bool oobX = false;
-                bool oobY = false;
-                Vector2 tiling = new Vector2(1.0f, 1.0f);
-                List<Vector2> uvs = new List<Vector2>();
-                List<Vector2> uvsOrig = new List<Vector2>();
-                mesh.GetUVs(0, uvs);
-                uvsOrig.AddRange(uvs);
-                float scaleUVDelta = 0.0f;
-                Vector2 scaleUVCentroid = Vector2.zero;
-                float currentContactRatio = 0.0f;
-
-                if (scaleActive)
-                {
-                    //scaleUVCentroid = GetScaleUVCentroid();
-                    scaleUVCentroid = GetDisplayedUVCentroid();
-                    currentContactRatio = GetUVScaleFromTouches();
-
-                    //todo fix this- totalUVScale resets to 1 when second hand touches.
-
-                    //hint: totalUVOffset works correctly- make scaleUVDelta work the same way
-                    scaleUVDelta = currentContactRatio / previousContactRatio;
-                    previousContactRatio = currentContactRatio;
-                }
+                scaleUVCentroid = GetDisplayedUVCentroid();
+                currentContactRatio = GetUVScaleFromTouches();
+                scaleUVDelta = currentContactRatio / previousContactRatio;
+                previousContactRatio = currentContactRatio;
 
                 for (int i = 0; i < uvs.Count; ++i)
                 {
-                    if (scaleActive)
-                    {
-                        //this is where zoom is applied if Active
-                        uvs[i] = ((uvs[i] - scaleUVCentroid) / scaleUVDelta) + scaleUVCentroid;
-                    }
-
-
-                    //this is where the Pan is applied
-                    uvs[i] = new Vector2(uvs[i].x - (totalUVOffset.x / previousContactRatio), uvs[i].y + (totalUVOffset.y / previousContactRatio));
-
-
-                    //Pan limits are applied here if specified
-                    if (wrapTexture == false)
-                    {
-                        if (uvs[i].x > (1.0f / tiling.x) || uvs[i].x < -0.001f)
-                        {
-                            oobX = true;
-                            totalUVOffset.x = 0.0f;
-                        }
-
-                        if (uvs[i].y > (1.0f / tiling.y) || uvs[i].y < -0.001f)
-                        {
-                            oobY = true;
-                            totalUVOffset.y = 0.0f;
-                        }
-                    }
+                    //this is where zoom is applied if Active
+                    uvs[i] = ((uvs[i] - scaleUVCentroid) / scaleUVDelta) + scaleUVCentroid;
                 }
-
-                for (int i = 0; i < uvs.Count; ++i)
-                {
-                    uvs[i] = new Vector2(oobX ? uvsOrig[i].x : uvs[i].x, oobY ? uvsOrig[i].y : uvs[i].y);
-                }
-
-                mesh.uv = uvs.ToArray();
             }
+
+            //test for pan limits
+            Vector2 uvDelta = new Vector2(totalUVOffset.x, -totalUVOffset.y);
+            if (unlimitedPan == false)
+            {
+                bool xLimited = false;
+                bool yLimited = false;
+                for (int i = 0; i < uvs.Count; ++i)
+                {
+                    uvTestValue = uvs[i] - uvDelta;
+                    if (uvTestValue.x > tiling.x * maxPanHorizontal || uvTestValue.x < -(tiling.x * maxPanHorizontal))
+                    {
+                        xLimited = true;
+                    }
+                    if (uvTestValue.y > tiling.y * maxPanVertical || uvTestValue.y < -(tiling.y * maxPanVertical))
+                    {
+                        yLimited = true;
+                    }
+                }
+
+                for (int i = 0; i < uvs.Count; ++i)
+                {
+                    uvs[i] = new Vector2(xLimited ? uvs[i].x : uvs[i].x - uvDelta.x, yLimited ? uvs[i].y : uvs[i].y - uvDelta.y);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < uvs.Count; ++i)
+                {
+                    uvs[i] -= uvDelta;
+                }
+            }
+            mesh.uv = uvs.ToArray();
+
+
+
+            //for (int i = 0; i < uvs.Count; ++i)
+            //{
+            //    if (scaleActive)
+            //    {
+            //        //this is where zoom is applied if Active
+            //        uvs[i] = ((uvs[i] - scaleUVCentroid) / scaleUVDelta) + scaleUVCentroid;
+            //    }
+
+            //    //this is where the Pan is applied
+            //    uvs[i] = new Vector2(uvs[i].x - (totalUVOffset.x / previousContactRatio), uvs[i].y + (totalUVOffset.y / previousContactRatio));
+
+            //    //Pan limits are applied here if specified
+            //    if (wrapTexture == false)
+            //    {
+            //        if (uvs[i].x > (1.0f / tiling.x) || uvs[i].x < -0.001f)
+            //        {
+            //            oobX = true;
+            //            totalUVOffset.x = 0.0f;
+            //        }
+
+            //        if (uvs[i].y > (1.0f / tiling.y) || uvs[i].y < -0.001f)
+            //        {
+            //            oobY = true;
+            //            totalUVOffset.y = 0.0f;
+            //        }
+            //    }
+            //}
+
+            //for (int i = 0; i < uvs.Count; ++i)
+            //{
+            //    uvs[i] = new Vector2(oobX ? uvsOrig[i].x : uvs[i].x, oobY ? uvsOrig[i].y : uvs[i].y);
+            //}
+
+            //mesh.uv = uvs.ToArray();
+
         }
         private float GetUVScaleFromTouches()
         {
