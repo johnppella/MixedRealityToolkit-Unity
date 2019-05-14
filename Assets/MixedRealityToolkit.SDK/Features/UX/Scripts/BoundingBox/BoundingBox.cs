@@ -1361,7 +1361,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
 
 
-        private void ScaleHandleByProximity(Transform handle, Vector3 leftHand, Vector3 rightHand)
+        private void ScaleHandleByProximity(Transform handle, Vector3 leftHand, Vector3 rightHand, float defaultScale)
         { 
             float leftDistanceSqr = float.MaxValue; 
             float rightDistanceSqr = float.MaxValue; 
@@ -1381,7 +1381,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             
             if (closestDistanceSqr < 0.01f) 
             { 
-                scalar = scaleHandleSize + ((handleProximityScale - 1.0f) * ((handleProximityDistance - closestDistanceSqr) / handleProximityDistance)); 
+                scalar = defaultScale + ((handleProximityScale - 1.0f) * ((handleProximityDistance - closestDistanceSqr) / handleProximityDistance)); 
                 handle.transform.localScale = new Vector3(scalar, scalar, scalar); 
             } 
             else 
@@ -1411,11 +1411,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                     for (int i = 0; i < corners.Count; ++i)
                     {
-                        ScaleHandleByProximity(corners[i], leftIndex, rightIndex);
+                        ScaleHandleByProximity(corners[i], leftIndex, rightIndex, scaleHandleSize);
                     }
                     for (int i = 0; i < balls.Count; ++i)
                     {
-                        ScaleHandleByProximity(balls[i], leftIndex, rightIndex);
+                        ScaleHandleByProximity(balls[i], leftIndex, rightIndex, rotationHandleDiameter);
                     }
                 }
             }
