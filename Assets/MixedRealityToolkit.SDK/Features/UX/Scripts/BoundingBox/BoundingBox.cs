@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -184,6 +185,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private float rotationHandleDiameter = 0.035f;
 
         [SerializeField]
+        [Tooltip("By a factor of how much do the handles grow when a hand gets close")]
+        [Range(0.8f, 1.5f)]
+        private float handleProximityScale = 1.01f;
+        [SerializeField]
+        [Tooltip("How far away should the hand be before it starts scaling a handle")]
+        [Range(0.005f, 0.03f)]
+        private float handleProximityDistance = 0.01f;
+
+        [SerializeField]
         [Tooltip("Check to show scale handles")]
         private bool showScaleHandles = true;
 
@@ -301,12 +311,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private BoundsCalculationMethod boundsMethod;
         private bool hideElementsInInspector = true;
 
-        private List<IMixedRealityInputSource> touchingSources = new List<IMixedRealityInputSource>();
+        private List<IMixedRealityInputSource> touchingSources;
         private List<Transform> links;
         private List<Transform> corners;
         private List<Transform> balls;
         private List<Renderer> linkRenderers;
         private List<IMixedRealityController> sourcesDetected;
+        /*
+        private List<IMixedRealityInputSource> touchingSources = new List<IMixedRealityInputSource>();
+        private List<Transform> links = new List<Transform>();
+        private List<Transform> corners = new List<Transform>();
+        private List<Transform> balls = new List<Transform>();
+        private List<Renderer> linkRenderers = new List<Renderer>();
+        private List<IMixedRealityController> sourcesDetected = new List<IMixedRealityController>();
+        */
         private Vector3[] edgeCenters;
 
         // Current axis of rotation about the center of the rig root
@@ -420,22 +438,34 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 Active = true;
             }
+            else if (activation == BoundingBoxActivationType.ActivateManually)
+            {
+                //activate to create handles etc. then deactivate. 
+                Active = true;
+                Active = false;
+            }
         }
 
         private void Update()
         {
-            if (currentPointer != null)
+            if (active)
             {
-                TransformTarget();
-                UpdateBounds();
-                UpdateRigHandles();
+                if (currentPointer != null)
+                {
+                    TransformTarget();
+                    UpdateBounds();
+                    UpdateRigHandles();
+                }
+                else if (!isChildOfTarget && Target.transform.hasChanged)
+                {
+                    UpdateBounds();
+                    UpdateRigHandles();
+                    Target.transform.hasChanged = false;
+                }
+
+                HandleProximityScaling();
             }
-            else if (!isChildOfTarget && Target.transform.hasChanged)
-            {
-                UpdateBounds();
-                UpdateRigHandles();
-                Target.transform.hasChanged = false;
-            }
+
         }
         #endregion MonoBehaviour Methods
 
@@ -573,7 +603,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void AddCorners()
         {
             bool isFlattened = (flattenAxis != FlattenModeType.DoNotFlatten);
-            
+
             // Flattened but missing custom 2D handle prefab OR Not flattened but missing custom 3D handle prefab.
             if ((isFlattened && (scaleHandleSlatePrefab == null)) || (scaleHandlePrefab == null))
             {
@@ -641,7 +671,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     GameObject cornerVisuals = Instantiate(isFlattened ? scaleHandleSlatePrefab : scaleHandlePrefab, visualsScale.transform);
                     cornerVisuals.name = "visuals";
 
-                    if(isFlattened)
+                    if (isFlattened)
                     {
                         // Rotate 2D slate handle asset for proper orientation
                         cornerVisuals.transform.Rotate(0, 0, -90);
@@ -718,6 +748,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     ball.name = "midpoint_" + i.ToString();
                     ball.transform.localPosition = edgeCenters[i];
 
+                    // Align handle with its edge assuming that the prefab is initially aligned with the up direction 
+                    if (edgeAxes[i] == CardinalAxisType.X)
+                    {
+                        Quaternion realignment = Quaternion.FromToRotation(Vector3.up, Vector3.right);
+                        ball.transform.localRotation = realignment * ball.transform.localRotation;
+                    }
+                    else if (edgeAxes[i] == CardinalAxisType.Z)
+                    {
+                        Quaternion realignment = Quaternion.FromToRotation(Vector3.up, Vector3.forward);
+                        ball.transform.localRotation = realignment * ball.transform.localRotation;
+                    }
+
                     SphereCollider collider = ball.AddComponent<SphereCollider>();
                     collider.radius = 0.5f * rotationHandleDiameter;
 
@@ -736,22 +778,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     balls.Add(ball.transform);
                 }
             }
-
-            // Aligns each rotation handle with the Y axis along the edge and the X and Z axis pointing
-            // out from the bounding box.
-            // Y axis of the prefab will point toward the positive direction of the pivot axis.
-            balls[0].localRotation = Quaternion.Euler(90, 90, 0) * balls[0].localRotation;
-            balls[1].localRotation = Quaternion.Euler(0, 180, 0) * balls[1].localRotation;
-            balls[2].localRotation = Quaternion.Euler(0, 180, 90) * balls[2].localRotation;
-            balls[3].localRotation = Quaternion.Euler(0, 90, 0) * balls[3].localRotation;
-            balls[4].localRotation = Quaternion.Euler(0, 0, -90) * balls[4].localRotation;
-            balls[5].localRotation = Quaternion.Euler(0, -90, 0) * balls[5].localRotation;
-            balls[6].localRotation = Quaternion.Euler(-90, 0, -90) * balls[6].localRotation;
-            balls[7].localRotation = Quaternion.Euler(0, 0, 0) * balls[7].localRotation;
-            balls[8].localRotation = Quaternion.Euler(180, 90, 90) * balls[8].localRotation;
-            balls[9].localRotation = Quaternion.Euler(90, 0, 0) * balls[9].localRotation;
-            balls[10].localRotation = Quaternion.Euler(-90, -90, -90) * balls[10].localRotation;
-            balls[11].localRotation = Quaternion.Euler(180, -90, -90) * balls[11].localRotation;
 
             if (links != null)
             {
@@ -1332,6 +1358,75 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 rigRoot.rotation = Target.transform.rotation;
             }
         }
+
+
+
+        private void ScaleHandleByProximity(Transform handle, Vector3 leftHand, Vector3 rightHand)
+        { 
+            float leftDistanceSqr = float.MaxValue; 
+            float rightDistanceSqr = float.MaxValue; 
+            float closestDistanceSqr; 
+            float scalar; 
+  
+            if (float.IsNaN(leftHand.x) == false) 
+            { 
+                leftDistanceSqr = (handle.position - leftHand).sqrMagnitude; 
+            } 
+            if (float.IsNaN(rightHand.x) == false) 
+            { 
+                rightDistanceSqr = (handle.position - rightHand).sqrMagnitude; 
+            }
+
+            closestDistanceSqr = Mathf.Min(leftDistanceSqr, rightDistanceSqr);
+            
+            if (closestDistanceSqr < 0.01f) 
+            { 
+                scalar = scaleHandleSize + ((handleProximityScale - 1.0f) * ((handleProximityDistance - closestDistanceSqr) / handleProximityDistance)); 
+                handle.transform.localScale = new Vector3(scalar, scalar, scalar); 
+            } 
+            else 
+            { 
+                handle.transform.localScale = new Vector3(scaleHandleSize, scaleHandleSize, scaleHandleSize); 
+            } 
+        }
+
+        private void HandleProximityScaling()
+        {
+            if (corners.Count > 0 || balls.Count > 0)
+            {
+                if (currentPointer == null)
+                {
+                    Vector3 leftIndex = new Vector3(float.NaN, float.NaN);
+                    Vector3 rightIndex = new Vector3(float.NaN, float.NaN);
+
+                    MixedRealityPose pose;
+                    if (HandJointUtils.TryGetJointPose(Utilities.TrackedHandJoint.IndexTip, Utilities.Handedness.Left, out pose))
+                    {
+                        leftIndex = pose.Position;
+                    }
+                    if (HandJointUtils.TryGetJointPose(Utilities.TrackedHandJoint.IndexTip, Utilities.Handedness.Right, out pose))
+                    {
+                        rightIndex = pose.Position;
+                    }
+
+                    for (int i = 0; i < corners.Count; ++i)
+                    {
+                        ScaleHandleByProximity(corners[i], leftIndex, rightIndex);
+                    }
+                    for (int i = 0; i < balls.Count; ++i)
+                    {
+                        ScaleHandleByProximity(balls[i], leftIndex, rightIndex);
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+
         private HandleType GetHandleType(Transform handle)
         {
             for (int i = 0; i < balls.Count; ++i)
