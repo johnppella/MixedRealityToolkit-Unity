@@ -379,6 +379,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 377361798}
     m_Modifications:
+    - target: {fileID: 2204069621426241315, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: m_Name
+      value: PressableButtonPlated (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 2204069623020599746, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -448,11 +453,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.5000013
-      objectReference: {fileID: 0}
-    - target: {fileID: 2204069621426241315, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
-        type: 3}
-      propertyPath: m_Name
-      value: PressableButtonPlated (1)
       objectReference: {fileID: 0}
     - target: {fileID: 2204069621878992557, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
@@ -1209,7 +1209,7 @@ PrefabInstance:
     - target: {fileID: 224765341978470034, guid: 655521c3560b40f40b75cd30857eae84,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000029891871
+      value: 0.000058407975
       objectReference: {fileID: 0}
     - target: {fileID: 224660968940914148, guid: 655521c3560b40f40b75cd30857eae84,
         type: 3}
@@ -3627,6 +3627,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1167763431}
     m_Modifications:
+    - target: {fileID: 2204069621426241315, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: m_Name
+      value: PressableButtonPlated (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 2204069623020599746, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3696,11 +3701,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2204069621426241315, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
-        type: 3}
-      propertyPath: m_Name
-      value: PressableButtonPlated (1)
       objectReference: {fileID: 0}
     - target: {fileID: 2204069621878992557, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
@@ -6577,7 +6577,7 @@ MonoBehaviour:
   focusEnabled: 1
   targetObject: {fileID: 775880685}
   boundsOverride: {fileID: 775880687}
-  activation: 3
+  activation: 4
   scaleMaximum: 2
   scaleMinimum: 0.2
   flattenAxis: 0
@@ -6603,6 +6603,15 @@ MonoBehaviour:
   showRotationHandleForY: 1
   showRotationHandleForZ: 1
   drawTetherWhenManipulating: 1
+  proximityEffectActive: 1
+  handleMediumProximity: 0.005
+  handleCloseProximity: 0.0015
+  farScale: 0.5
+  mediumScale: 2
+  closeScale: 3
+  farGrowRate: 0.9
+  mediumGrowRate: 0.95
+  closeGrowRate: 0.95
   debugText: {fileID: 0}
   RotateStarted:
     m_PersistentCalls:
@@ -7807,6 +7816,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7779420039263858275, guid: 937ce507dd7ee334ba569554e24adbdd,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 937ce507dd7ee334ba569554e24adbdd, type: 3}
@@ -10068,6 +10082,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1167763431}
     m_Modifications:
+    - target: {fileID: 2204069621426241315, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: m_Name
+      value: PressableButtonPlated (3)
+      objectReference: {fileID: 0}
     - target: {fileID: 2204069623020599746, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10137,11 +10156,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2204069621426241315, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
-        type: 3}
-      propertyPath: m_Name
-      value: PressableButtonPlated (3)
       objectReference: {fileID: 0}
     - target: {fileID: 2204069621878992557, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
@@ -10736,6 +10750,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1471801280}
     m_Modifications:
+    - target: {fileID: 2204069621426241315, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: m_Name
+      value: ToggleProfilerButton
+      objectReference: {fileID: 0}
     - target: {fileID: 2204069623020599746, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10805,11 +10824,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2204069621426241315, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
-        type: 3}
-      propertyPath: m_Name
-      value: ToggleProfilerButton
       objectReference: {fileID: 0}
     - target: {fileID: 2204069621878992557, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
@@ -12242,6 +12256,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1471801280}
     m_Modifications:
+    - target: {fileID: 2204069621426241315, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: m_Name
+      value: ToggleHandMesh
+      objectReference: {fileID: 0}
     - target: {fileID: 2204069623020599746, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12311,11 +12330,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.5000002
-      objectReference: {fileID: 0}
-    - target: {fileID: 2204069621426241315, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
-        type: 3}
-      propertyPath: m_Name
-      value: ToggleHandMesh
       objectReference: {fileID: 0}
     - target: {fileID: 2204069621878992557, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
@@ -12854,6 +12868,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cheese
       objectReference: {fileID: 0}
+    - target: {fileID: 1976327359951936, guid: e9e54ebd208487c409e32502a50a1f20, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4538655477204070, guid: e9e54ebd208487c409e32502a50a1f20, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.21
@@ -13012,7 +13030,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1520668842
 Transform:
   m_ObjectHideFlags: 0
@@ -13613,6 +13631,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1167763431}
     m_Modifications:
+    - target: {fileID: 2204069621426241315, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: m_Name
+      value: PressableButtonPlated (2)
+      objectReference: {fileID: 0}
     - target: {fileID: 2204069623020599746, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13682,11 +13705,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2204069621426241315, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
-        type: 3}
-      propertyPath: m_Name
-      value: PressableButtonPlated (2)
       objectReference: {fileID: 0}
     - target: {fileID: 2204069621878992557, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
@@ -14377,7 +14395,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1642486404
 Transform:
   m_ObjectHideFlags: 0
@@ -14597,6 +14615,15 @@ MonoBehaviour:
   showRotationHandleForY: 1
   showRotationHandleForZ: 1
   drawTetherWhenManipulating: 1
+  proximityEffectActive: 1
+  handleMediumProximity: 0.005
+  handleCloseProximity: 0.0015
+  farScale: 0.5
+  mediumScale: 2
+  closeScale: 3
+  farGrowRate: 0.9
+  mediumGrowRate: 0.95
+  closeGrowRate: 0.95
   debugText: {fileID: 0}
   RotateStarted:
     m_PersistentCalls:
@@ -14832,7 +14859,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1647389046
 Transform:
   m_ObjectHideFlags: 0
@@ -14890,6 +14917,15 @@ MonoBehaviour:
   showRotationHandleForY: 1
   showRotationHandleForZ: 1
   drawTetherWhenManipulating: 1
+  proximityEffectActive: 1
+  handleMediumProximity: 0.005
+  handleCloseProximity: 0.0015
+  farScale: 0.5
+  mediumScale: 2
+  closeScale: 3
+  farGrowRate: 0.9
+  mediumGrowRate: 0.95
+  closeGrowRate: 0.95
   debugText: {fileID: 0}
   RotateStarted:
     m_PersistentCalls:
@@ -15517,8 +15553,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1698852959}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.067, y: 0.171, z: 0.9871897}
+  m_LocalRotation: {x: -0.061349567, y: -0.014304214, z: -0.013533954, w: 0.99792206}
+  m_LocalPosition: {x: 0.413, y: 0.432, z: 0.711}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1941657964}
@@ -15532,7 +15568,7 @@ Transform:
   - {fileID: 1471801280}
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -7.056, y: -1.5530001, z: -1.4580001}
 --- !u!1001 &1701661899
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15540,6 +15576,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1167763431}
     m_Modifications:
+    - target: {fileID: 2204069621426241315, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: m_Name
+      value: PressableButtonPlated
+      objectReference: {fileID: 0}
     - target: {fileID: 2204069623020599746, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -15609,11 +15650,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2204069621426241315, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
-        type: 3}
-      propertyPath: m_Name
-      value: PressableButtonPlated
       objectReference: {fileID: 0}
     - target: {fileID: 2204069621878992557, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
@@ -15978,6 +16014,15 @@ MonoBehaviour:
   showRotationHandleForY: 1
   showRotationHandleForZ: 0
   drawTetherWhenManipulating: 1
+  proximityEffectActive: 1
+  handleMediumProximity: 0.005
+  handleCloseProximity: 0.0015
+  farScale: 0.5
+  mediumScale: 2
+  closeScale: 3
+  farGrowRate: 0.9
+  mediumGrowRate: 0.95
+  closeGrowRate: 0.95
   debugText: {fileID: 0}
   RotateStarted:
     m_PersistentCalls:
@@ -17031,15 +17076,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.08599998
+      value: 0.051
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0019999873
+      value: 0.127
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.043999948
+      value: -0.49
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
       propertyPath: m_LocalRotation.x
@@ -17226,7 +17271,7 @@ MonoBehaviour:
     type: 3}
   scaleHandleSlatePrefab: {fileID: 1134031327877807717, guid: c45e552a6d92491468c421c35c5dd63d,
     type: 3}
-  scaleHandleSize: 0.04
+  scaleHandleSize: 0.5
   rotationHandlePrefab: {fileID: 100000, guid: 57c53da2552a8114ab6d68e0cd31b1eb, type: 3}
   rotationHandleDiameter: 0.035
   showScaleHandles: 1
@@ -17234,6 +17279,15 @@ MonoBehaviour:
   showRotationHandleForY: 1
   showRotationHandleForZ: 1
   drawTetherWhenManipulating: 1
+  proximityEffectActive: 1
+  handleMediumProximity: 0.005
+  handleCloseProximity: 0.0015
+  farScale: 0
+  mediumScale: 2
+  closeScale: 3
+  farGrowRate: 0.3
+  mediumGrowRate: 0.2
+  closeGrowRate: 0.3
   debugText: {fileID: 0}
   RotateStarted:
     m_PersistentCalls:
@@ -17815,10 +17869,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CoffeeCup
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.896
-      objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.209
@@ -17875,6 +17925,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d5334c45caee46be937b095a1e977dc6, type: 2}
+    - target: {fileID: 400000, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.896
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e963263242b6cbb4bbbf279f0c0e7789, type: 3}
 --- !u!4 &2045373141 stripped
@@ -18408,6 +18462,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1471801280}
     m_Modifications:
+    - target: {fileID: 2204069621426241315, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: m_Name
+      value: ToggleHandJoint
+      objectReference: {fileID: 0}
     - target: {fileID: 2204069623020599746, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18477,11 +18536,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.5000002
-      objectReference: {fileID: 0}
-    - target: {fileID: 2204069621426241315, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
-        type: 3}
-      propertyPath: m_Name
-      value: ToggleHandJoint
       objectReference: {fileID: 0}
     - target: {fileID: 2204069621878992557, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
@@ -18608,6 +18662,16 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: e6ab953dc933471489f5ebff6791a886, type: 2}
+    - target: {fileID: 2204069621878992592, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204069621878992592, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f1f46cbecbe08e46a303ccfdb5b498a, type: 3}
 --- !u!4 &2108381302 stripped
@@ -19351,7 +19415,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2145624440
 Transform:
   m_ObjectHideFlags: 0
@@ -19585,14 +19649,23 @@ MonoBehaviour:
     type: 3}
   scaleHandleSlatePrefab: {fileID: 1134031327877807717, guid: c45e552a6d92491468c421c35c5dd63d,
     type: 3}
-  scaleHandleSize: 0.05
+  scaleHandleSize: 1
   rotationHandlePrefab: {fileID: 100000, guid: 57c53da2552a8114ab6d68e0cd31b1eb, type: 3}
-  rotationHandleDiameter: 0.05
+  rotationHandleDiameter: 1
   showScaleHandles: 1
   showRotationHandleForX: 1
   showRotationHandleForY: 1
   showRotationHandleForZ: 1
   drawTetherWhenManipulating: 1
+  proximityEffectActive: 1
+  handleMediumProximity: 0.005
+  handleCloseProximity: 0.0015
+  farScale: 0.5
+  mediumScale: 2
+  closeScale: 3
+  farGrowRate: 0.9
+  mediumGrowRate: 0.95
+  closeGrowRate: 0.95
   debugText: {fileID: 0}
   RotateStarted:
     m_PersistentCalls:
