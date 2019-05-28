@@ -184,6 +184,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Size of the cube collidable used in scale handles")]
         private float scaleHandleSize = 0.03f;
         [SerializeField]
+        [Tooltip("Scale override for custom Corner Handlers: Size of its collider")]
+        private float cornerHandleColliderScale = 0.02f;
+        [SerializeField]
         [Tooltip("Prefab used to display rotation handles in the midpoint of each edge. Aligns the Y axis of the prefab with the pivot axis, and the X and Z axes pointing outward. If not set, spheres will be displayed instead")]
         GameObject rotationHandlePrefab = null;
         [SerializeField]
@@ -695,7 +698,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     corner.transform.localPosition = boundsCorners[i];
 
                     BoxCollider collider = corner.AddComponent<BoxCollider>();
-                    collider.size = (scaleHandleSize * 0.2f) * Vector3.one;
+                    collider.size = (scaleHandleSize * cornerHandleColliderScale) * Vector3.one;
                     handleColliders.Add(collider);
 
                     // In order for the corner to be grabbed using near interaction we need
