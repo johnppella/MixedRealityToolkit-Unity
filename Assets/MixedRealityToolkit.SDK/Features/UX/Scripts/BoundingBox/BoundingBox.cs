@@ -336,7 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private bool hasFocus;
 
         private BoundsCalculationMethod boundsMethod;
-        private bool hideElementsInInspector = true;
+        private bool hideElementsInInspector = false;
 
         private List<IMixedRealityInputSource> touchingSources;
         private List<Transform> links;
@@ -504,8 +504,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     HandleProximityScaling();
                 }
             }
-
         }
+
         #endregion MonoBehaviour Methods
 
         #region Private Methods
@@ -695,7 +695,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     corner.transform.localPosition = boundsCorners[i];
 
                     BoxCollider collider = corner.AddComponent<BoxCollider>();
-                    collider.size = scaleHandleSize * Vector3.one;
+                    collider.size = (scaleHandleSize * 0.2f) * Vector3.one;
                     handleColliders.Add(collider);
 
                     // In order for the corner to be grabbed using near interaction we need
@@ -1480,17 +1480,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 //only use proximity effect if nothing is being dragged or grabbed
                 if (currentPointer == null)
                 {
-                    
-
                     Vector3 leftIndex = new Vector3(float.NaN, float.NaN, float.NaN);
                     Vector3 rightIndex = new Vector3(float.NaN, float.NaN, float.NaN);
                     Vector3 leftRayPt = new Vector3(float.NaN, float.NaN, float.NaN);
                     Vector3 rightRayPt = new Vector3(float.NaN, float.NaN, float.NaN);
 
-                    SetEnabledForHandleColliders(false);
                     TryGetPointerPoint(Handedness.Left, out leftRayPt);
                     TryGetPointerPoint(Handedness.Right, out rightRayPt);
-                    SetEnabledForHandleColliders(true);
 
                     if (HandJointUtils.TryGetJointPose(Utilities.TrackedHandJoint.IndexTip, Utilities.Handedness.Left, out MixedRealityPose leftPose))
                     {
@@ -1513,10 +1509,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         ScaleHandleByProximity(balls[i], ballRenderers.Count > 0 ? ballRenderers[i] : null, ballsProximate[i], leftIndex, rightIndex, rotationHandleDiameter);
                     }
-                }
-                else
-                {
-                  //SetEnabledForHandleColliders(true);
                 }
             }
         }
