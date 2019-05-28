@@ -339,7 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private bool hasFocus;
 
         private BoundsCalculationMethod boundsMethod;
-        private bool hideElementsInInspector = false;
+        private bool hideElementsInInspector = true;
 
         private List<IMixedRealityInputSource> touchingSources;
         private List<Transform> links;
