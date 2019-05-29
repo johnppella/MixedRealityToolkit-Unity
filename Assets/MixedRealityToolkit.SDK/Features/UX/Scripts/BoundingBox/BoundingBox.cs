@@ -1416,22 +1416,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (closestDistanceSqr < handleCloseProximity)
             {
                 ScaleHandle(handle, state, HandleProximityState.CloseProximity, closeScale);
+
                 if (renderer != null && renderer.material != handleGrabbedMaterial)
                 {
                     renderer.material = handleGrabbedMaterial;
                 }
             }
-            else if (closestDistanceSqr < handleMediumProximity)
+            else
             {
-                ScaleHandle(handle, state, HandleProximityState.MediumProximity, mediumScale);
-                if (renderer != null && renderer.material != handleMaterial)
+                if (closestDistanceSqr < handleMediumProximity)
                 {
-                    renderer.material = handleMaterial;
+                    ScaleHandle(handle, state, HandleProximityState.MediumProximity, mediumScale);
                 }
-            }
-            else 
-            {
-                ScaleHandle(handle, state, HandleProximityState.FullsizeNoProximity, farScale);
+                else
+                {
+                    ScaleHandle(handle, state, HandleProximityState.FullsizeNoProximity, farScale);
+                }
+
                 if (renderer != null && renderer.material != handleMaterial)
                 {
                     renderer.material = handleMaterial;
@@ -1471,35 +1472,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             ScaleHandleByProximity(balls[i], ballRenderers.Count > 0 ? ballRenderers[i] : null, ballsProximate[i], leftHandPoint, rightHandPoint, rotationHandleDiameter);
                         }
                     }
-
-
-                    //Vector3 leftRayPt = new Vector3(float.NaN, float.NaN, float.NaN);
-                    //Vector3 rightRayPt = new Vector3(float.NaN, float.NaN, float.NaN);
-
-                    //TryGetPointerPoint(Handedness.Left, out leftRayPt);
-                    //TryGetPointerPoint(Handedness.Right, out rightRayPt);
-
-                    //if (HandJointUtils.TryGetJointPose(Utilities.TrackedHandJoint.IndexTip, Utilities.Handedness.Left, out MixedRealityPose leftPose))
-                    //{
-                    //    leftIndex = leftPose.Position;
-                    //}
-                    //leftIndex = !float.IsNaN(leftRayPt.x) ? leftRayPt : leftIndex;
-
-                    //if (HandJointUtils.TryGetJointPose(Utilities.TrackedHandJoint.IndexTip, Utilities.Handedness.Right, out MixedRealityPose rightPose))
-                    //{
-                    //    rightIndex = rightPose.Position;
-                    //}
-                    //rightIndex = !float.IsNaN(leftRayPt.x)  ? rightRayPt : rightIndex;
-
-                    //    for (int i = 0; i < corners.Count; ++i)
-                    //{
-                    //    ScaleHandleByProximity(corners[i], cornerRenderers.Count > 0 ? cornerRenderers[i] : null, cornersProximate[i], leftIndex, rightIndex, scaleHandleSize);
-                    //}
-
-                    //for (int i = 0; i < balls.Count; ++i)
-                    //{
-                    //    ScaleHandleByProximity(balls[i], ballRenderers.Count > 0 ? ballRenderers[i] : null, ballsProximate[i], leftIndex, rightIndex, rotationHandleDiameter);
-                    //}
                 }
             }
         }
