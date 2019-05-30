@@ -399,6 +399,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     active = value;
                     rigRoot?.gameObject.SetActive(value);
                     ResetHandleVisibility();
+
+                    if (value && proximityEffectActive)
+                    {
+                        HandleProximityScaling(true);
+                    }
                 }
             }
         }
@@ -468,9 +473,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 Active = true;
                 Active = false;
             }
-
-            
-            
         }
 
         private void Update()
@@ -1447,12 +1449,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             handle.transform.localScale = new Vector3(newLocalScale, newLocalScale, newLocalScale);
         }
 
-        private void HandleProximityScaling()
+        private void HandleProximityScaling(bool forceFar = false)
         {
             if (corners.Count > 0 || balls.Count > 0)
             {
                 //only use proximity effect if nothing is being dragged or grabbed
-                if (currentPointer == null)
+                if (currentPointer == null && forceFar == false)
                 {
                     Vector3 leftHandPoint;
                     Vector3 rightHandPoint;
@@ -1471,6 +1473,28 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         {
                             ScaleHandleByProximity(balls[i], ballRenderers.Count > 0 ? ballRenderers[i] : null, ballsProximate[i], leftHandPoint, rightHandPoint, rotationHandleDiameter);
                         }
+                    }
+                }
+                else if (forceFar == true)
+                {
+                    for (int i = 0; i < corners.Count; ++i)
+                    {
+                        if (cornerRenderers[i] != null)
+                        {
+                            cornerRenderers[i].material = handleMaterial;
+                        }
+                        cornersProximate[i] = HandleProximityState.FullsizeNoProximity;
+                        corners[i].transform.localScale = (scaleHandleSize * farScale) * Vector3.one;
+                    }
+
+                    for (int i = 0; i < balls.Count; ++i)
+                    {
+                        if (ballRenderers[i] != null)
+                        {
+                            ballRenderers[i].material = handleMaterial;
+                        }
+                        ballsProximate[i] = HandleProximityState.FullsizeNoProximity;
+                        balls[i].transform.localScale = (scaleHandleSize * farScale) * Vector3.one;
                     }
                 }
             }
