@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Enum which describes how an object's boundingbox is to be flattened.
         /// </summary>
-        private enum FlattenModeType
+        public enum FlattenModeType
         {
             DoNotFlatten = 0,
             /// <summary>
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Wireframe refers to the thin linkage between the handles. When the handles are invisible
         /// the wireframe looks like an outline box around an object.
         /// </remarks> 
-        private enum WireframeType
+        public enum WireframeType
         {
             Cubic = 0,
             Cylindrical
