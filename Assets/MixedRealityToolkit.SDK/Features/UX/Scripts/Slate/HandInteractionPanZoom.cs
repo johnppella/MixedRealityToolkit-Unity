@@ -101,9 +101,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get { return currentScale; }
         }
 
-        [SerializeField]
-        private TextMesh debugText;
-
         [Header("Events")]
         public UnityEvent PanStarted;
         public UnityEvent PanStopped;
@@ -219,6 +216,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         rightPoint.transform.position = GetContactForHand(Handedness.Right);
                     }
+
+                    
                 }
             }
         }
@@ -653,6 +652,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             data.currentController = controller;
             if (isNear == true)
             {
+                SetAffordancesActive(true);
                 if (TryGetHandPositionFromController(data.currentController, TrackedHandJoint.IndexTip, out Vector3 touchPosition) == true)
                 {
                     data.touchingInitialPt = SnapFingerToQuad(touchPosition);
@@ -712,6 +712,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 previousContactRatio = 1.0f;
             }
 
+            SetAffordancesActive(isNear);
+
             StartTouch(data.touchingSource.SourceId);
         }
         private bool TryGetHandPositionFromController(IMixedRealityController controller, TrackedHandJoint joint, out Vector3 position)
@@ -733,7 +735,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (source.SourceType == InputSourceType.Controller && source.Pointers[0].Result != null)
                 {
                     points.Add(source.Pointers[0].Result.Details.Point);
-                    debugText.text = source.Pointers[0].Result.Details.Point.ToString();
                 }
             }
         }
