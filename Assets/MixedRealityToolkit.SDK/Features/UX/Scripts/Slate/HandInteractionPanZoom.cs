@@ -652,6 +652,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             data.currentController = controller;
             if (isNear == true)
             {
+                Debug.Log("isnear");
                 SetAffordancesActive(true);
                 if (TryGetHandPositionFromController(data.currentController, TrackedHandJoint.IndexTip, out Vector3 touchPosition) == true)
                 {
@@ -849,12 +850,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public void OnTouchStarted(HandTrackingInputEventData eventData)
         {
-            if (eventData.MixedRealityInputAction.Description != "None")
-            {
-                EndTouch(eventData.SourceId);
-                SetHandDataFromController(eventData.Controller, true);
-                eventData.Use();
-            }
+            EndTouch(eventData.SourceId);
+            SetHandDataFromController(eventData.Controller, true);
+            eventData.Use();
         }
         public void OnTouchCompleted(HandTrackingInputEventData eventData)
         {
