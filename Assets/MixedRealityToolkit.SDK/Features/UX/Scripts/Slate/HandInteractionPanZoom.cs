@@ -178,11 +178,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (touchActive)
                 {
-                    if (affordancesVisible == false)
-                    {
-                        SetAffordancesActive(true);
-                    }
-
                     foreach (uint key in handDataMap.Keys)
                     {
                         if (true == UpdateHandTouchingPoint(key))
@@ -492,7 +487,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 rightPoint.SetActive(affordancesVisible);
             }
-
         }
         private Vector3 GetContactForHand(Handedness hand)
         {
@@ -652,8 +646,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             data.currentController = controller;
             if (isNear == true)
             {
-                Debug.Log("isnear");
-                SetAffordancesActive(true);
                 if (TryGetHandPositionFromController(data.currentController, TrackedHandJoint.IndexTip, out Vector3 touchPosition) == true)
                 {
                     data.touchingInitialPt = SnapFingerToQuad(touchPosition);
@@ -871,6 +863,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (eventData.MixedRealityInputAction.Description != "None")
             {
+                SetAffordancesActive(false);
                 EndTouch(eventData.SourceId);
                 SetHandDataFromController(eventData.InputSource.Pointers[0].Controller, false);
                 eventData.Use();
