@@ -228,26 +228,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region Private Methods
         private bool TryGetMRControllerRayPoint(HandPanData data, out Vector3 rayPoint)
         {
-            if (data.currentController.InputSource.SourceName.Contains("Mixed Reality Controller") && !(data.currentController.InputSource.Pointers[0] is GGVPointer))
+            if (data.currentController.InputSource.SourceName.Contains("Mixed Reality Controller"))
             {
-                Vector3 pos = data.currentController.InputSource.Pointers[0].Position;
-                Vector3 dir = data.currentController.InputSource.Pointers[0].Rays[0].Direction * (data.currentController.InputSource.Pointers[0].SphereCastRadius);
-                rayPoint = data.touchingInitialPt + (SnapFingerToQuad(pos + dir) - data.initialProjectedOffset);
-                return true;
+                if (!(data.currentController.InputSource.Pointers[0] is GGVPointer))
+                {
+                    Vector3 pos = data.currentController.InputSource.Pointers[0].Position;
+                    Vector3 dir = data.currentController.InputSource.Pointers[0].Rays[0].Direction * (data.currentController.InputSource.Pointers[0].SphereCastRadius);
+                    rayPoint = data.touchingInitialPt + (SnapFingerToQuad(pos + dir) - data.initialProjectedOffset);
+                    return true;
+                }
+                else//then it IS a GGVPointer
+                {
+                    rayPoint = data.touchingInitialPt + (SnapFingerToQuad(data.currentController.InputSource.Pointers[0].Position) - data.initialProjectedOffset);
+                    return true;
+                }
             }
-            else if (data.currentController.InputSource.Pointers[0] is GGVPointer)
-            {
-                rayPoint = data.touchingInitialPt + (SnapFingerToQuad(data.currentController.InputSource.Pointers[0].Position) - data.initialProjectedOffset);
-                return true;
-            }
+          
             rayPoint = Vector3.zero;
             return false;
         }
 
-        private void UpdateScreenData(Vector3 pt)
-        {
-           GameObject.Find("testCube").transform.position = pt;
-        }
         private bool UpdateHandTouchingPoint(uint sourceId)
         {
             Vector3 tryHandPoint = Vector3.zero;
@@ -683,7 +683,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Vector3 dir = controller.InputSource.Pointers[0].Rays[0].Direction * (controller.InputSource.Pointers[0].SphereCastRadius);
                     data.initialProjectedOffset = SnapFingerToQuad(pt + dir);
                 }
-                else
+                else//pointer is GGVPOinter and has no SphereCastRadius
                 {
                     data.initialProjectedOffset = SnapFingerToQuad(pt);
                 }
