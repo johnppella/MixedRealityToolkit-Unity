@@ -228,15 +228,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region Private Methods
         private bool TryGetMRControllerRayPoint(HandPanData data, out Vector3 rayPoint)
         {
-            if (data != null && data.currentController != null && data.currentController.InputSource.SourceName.Contains("Mixed Reality Controller"))
+            if (data.currentController.InputSource.SourceName.Contains("Mixed Reality Controller") && !(data.currentController.InputSource.Pointers[0] is GGVPointer))
             {
                 Vector3 pos = data.currentController.InputSource.Pointers[0].Position;
                 Vector3 dir = data.currentController.InputSource.Pointers[0].Rays[0].Direction * (data.currentController.InputSource.Pointers[0].SphereCastRadius);
                 rayPoint = data.touchingInitialPt + (SnapFingerToQuad(pos + dir) - data.initialProjectedOffset);
                 return true;
             }
+            else if (data.currentController.InputSource.Pointers[0] is GGVPointer)
+            {
+                rayPoint = data.touchingInitialPt + (SnapFingerToQuad(data.currentController.InputSource.Pointers[0].Position) - data.initialProjectedOffset);
+                return true;
+            }
             rayPoint = Vector3.zero;
             return false;
+        }
+
+        private void UpdateScreenData(Vector3 pt)
+        {
+           GameObject.Find("testCube").transform.position = pt;
         }
         private bool UpdateHandTouchingPoint(uint sourceId)
         {
@@ -245,6 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (handDataMap.ContainsKey(sourceId) == true)
             {
                 HandPanData data = handDataMap[sourceId];
+
                 if (data.IsActive == true)
                 {
                     if (TryGetMRControllerRayPoint(data, out tryHandPoint))
@@ -269,6 +280,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         data.touchingPointSmoothed = (data.touchingPointSmoothed * runningAverageSmoothing) + unfilteredTouchPt;
                         data.touchingPoint = data.touchingPointSmoothed;
                     }
+
+
                 }
             }
 
@@ -662,11 +675,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             //store value in case of MRController
-            if (controller.InputSource.Pointers.Length > 0)
+            if (controller.InputSource.Pointers.Length > 0 )
             {
                 Vector3 pt = controller.InputSource.Pointers[0].Position;
-                Vector3 dir = controller.InputSource.Pointers[0].Rays[0].Direction * (controller.InputSource.Pointers[0].SphereCastRadius);
-                data.initialProjectedOffset = SnapFingerToQuad(pt + dir);
+                if (!(controller.InputSource.Pointers[0] is GGVPointer))
+                {
+                    Vector3 dir = controller.InputSource.Pointers[0].Rays[0].Direction * (controller.InputSource.Pointers[0].SphereCastRadius);
+                    data.initialProjectedOffset = SnapFingerToQuad(pt + dir);
+                }
+                else
+                {
+                    data.initialProjectedOffset = SnapFingerToQuad(pt);
+                }
             }
 
             data.touchingQuadCoord = GetUVFromPoint(data.touchingPoint);
